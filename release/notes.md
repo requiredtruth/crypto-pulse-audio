@@ -6,4 +6,4 @@ CryptoPulse Audio v1.1.0
 - News checks minimum/default 60 seconds; persistent ETag/Last-Modified conditional requests avoid repeat body downloads when supported.
 - Custom market thresholds/cooldowns, feed ranking, quiet hours, voices, notifications and foreground monitoring.
 
-Offline checks: 81 pass. APK compiled and signatures verified. Release workflow requires production live-stream transport verification. Physical phone/glasses audio and Android power/lifecycle behavior remain device acceptance items; see VALIDATION.md in the source ZIP.
+Offline checks: 81 pass. APK compiled and signatures verified. Production JVM live-stream connection received the four requested crypto tickers; all ten markets loaded in bootstrap. All eleven news feeds passed the production parser. Physical phone/glasses audio and Android power/lifecycle behavior remain device acceptance items; see VALIDATION.md in the source ZIP.
