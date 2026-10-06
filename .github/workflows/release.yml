@@ -22,7 +22,7 @@ jobs:
         run: |
           ./test.sh
           (cd release && sha256sum --check SHA256SUMS)
-          unzip -t release/CryptoPulse-Audio-source-v1.1.0.zip
+          unzip -t "release/CryptoPulse-Audio-source-$(cat release/version).zip"
       - name: Verify production live price transport
         run: ./test.sh --stream
       - name: Publish APK, source and specification

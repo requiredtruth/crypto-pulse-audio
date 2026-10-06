@@ -1,4 +1,4 @@
-# CryptoPulse Audio v1.1.0 — specification
+# CryptoPulse Audio v1.1.1 — specification
 
 ## Goal and deliverables
 Native Android phone companion for Bluetooth audio glasses/headsets: stream financial-market prices, check ranked news and speak accepted updates in the background. Signed APK with launcher and notification icons, complete source ZIP and this Markdown spec are published as a GitHub Release.
@@ -31,7 +31,7 @@ Crypto selection is restricted to the four requested coins. Resolve market IDs b
 - Monitoring percentage is `(current / first monitoring baseline - 1) × 100`. Alert percentage uses the immediately preceding fresh quote in the active service session. Every newer accepted quote advances the comparison, even below threshold or during cooldown; it never accumulates movement since a prior alert. The first quote initializes it without speaking. Restarting monitoring reinitializes this check comparison; the overview monitoring baseline persists locally and can be reset. Labels show their time; no current OHLC opening value is presented as a 24-hour opening price.
 - Global movement threshold defaults to **0.25%**, editable **0.01%–50%**. Individual market overrides are supported. Input is hundredths of a percent: `25 = 0.25%`. Exact threshold crossings include floating-point tolerance.
 - Per-market cooldown defaults to **30 seconds**, editable **0–3600 seconds**. Zero allows all threshold crossings; unchanged ticks do not create announcements.
-- Every price announcement is exactly `TICKER up/down 0.13%`, for example `BTC up 0.13%` or `ETH down 0.13%`. Fixed two decimal places, absolute percentage, no human name, current price, source, time, prefix or suffix. “Since last checked” describes the calculation and is not spoken. TTS pronunciation of the percent sign depends on the selected Android voice.
+- Every price announcement is exactly `TICKER up/down 0.13%`, for example `BTC up 0.13%` or `ETH down 0.13%`. Fixed two decimal places, absolute percentage, no human name, current price, source, time, prefix or suffix. “Since last checked” describes the calculation and is not spoken. Moves are rounded HALF_UP to two decimal places; true zero, tiny moves rounding to `0.00%`, and non-finite changes produce no speech or notification. This applies to per-tick alerts and optional digests; mixed digests retain only nonzero entries. TTS pronunciation of the percent sign depends on the selected Android voice.
 - Periodic digest is off by default. If enabled, interval defaults to 30 minutes, editable 5–720 minutes, and each recent market entry uses the same clean ticker/change format with no extra narration. Pending market alerts replace that market's older unspoken alert while preserving active speech.
 - Overview refreshes once per second. In-memory quote publication is throttled to once per second and disk snapshots to roughly once per 30 seconds. Update/source/baseline timestamps remain visible; observations over one minute old are labeled no-recent-tick/may-be-closed. Indices, commodities and forex may close outside their trading sessions. A global snapshot time does not certify every individual market was trading at that instant.
 
@@ -39,9 +39,7 @@ Crypto selection is restricted to the four requested coins. Resolve market IDs b
 | Rank | Source | Feed |
 |---|---|---|
 | 1 | CoinDesk | https://www.coindesk.com/arc/outboundfeeds/rss/ |
-| 2 | CNBC Markets | https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=100003114 |
 | 3 | Bloomberg Markets | https://feeds.bloomberg.com/markets/news.rss |
-| 4 | MarketWatch | https://feeds.marketwatch.com/marketwatch/topstories/ |
 | 5 | Financial Times | https://www.ft.com/rss/home |
 | 6 | BBC Business | https://feeds.bbci.co.uk/news/business/rss.xml |
 | 7 | Guardian Business | https://www.theguardian.com/business/rss |
@@ -52,10 +50,10 @@ Crypto selection is restricted to the four requested coins. Resolve market IDs b
 
 Ranks are editable preferences, not factual reliability scores. Each feed can be disabled or ranked 1–99; up to ten custom feeds can be added/removed.
 
-### Government-source policy
-Federal Reserve/government feeds are removed. All app HTTP requests, redirects, custom feed URLs, parsed article URLs and direct article opens require HTTPS and reject host labels named `gov`, including `gov.uk`. Embedded URL credentials are rejected. The external browser handles its own later redirects. Private-publisher reporting about monetary policy remains available.
+### Excluded-source policy
+Federal Reserve/government feeds, CNBC and MarketWatch are removed. The latter publishers' root/subdomains are blocked, including custom feeds, requests, redirects, article URLs and direct article opens. All app HTTP requests, redirects, custom feed URLs, parsed article URLs and direct article opens require HTTPS and reject host labels named `gov`, including `gov.uk`. Embedded URL credentials are rejected. The external browser handles its own later redirects. Other private-publisher reporting about monetary policy remains available.
 
-Upgrade migration replaces the former crypto watchlist, clears former exchange quotes and pending speech/logs, removes government story/dedup/custom-source entries and initializes live-alert defaults while preserving other voice/background preferences.
+Older v1.0 upgrades replace the former crypto watchlist and initialize live-alert defaults. The v1.1.1 migration removes CNBC/MarketWatch preferences, validators, stories, dedup entries, custom feeds and queued news, clears stale queued price/digest speech and zero-message logs, and cancels prior update notifications on service startup. Remaining ranks, market selection, news timing and voice/background preferences survive a v1.1.0 upgrade. Migration is idempotent.
 
 ### Conditional checks and timing
 - Default and hard minimum **60 seconds**; configurable **60–3600 seconds**.

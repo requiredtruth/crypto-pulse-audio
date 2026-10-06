@@ -14,5 +14,5 @@ java -m jdk.compiler/com.sun.tools.javac.Main -source 8 -target 8 -bootclasspath
 "$BT/zipalign" -f -p 4 build/unsigned.apk build/aligned.apk
 # Keep the generated local key private and stable for future APK updates.
 if [ ! -f build/signing.jks ]; then keytool -genkeypair -keystore build/signing.jks -storepass android -keypass android -alias cryptopulse -keyalg RSA -keysize 2048 -validity 10000 -dname 'CN=CryptoPulse Audio Local Build'; fi
-"$BT/apksigner" sign --ks build/signing.jks --ks-pass pass:android --out dist/CryptoPulse-Audio-v1.1.0.apk build/aligned.apk
-"$BT/apksigner" verify --verbose dist/CryptoPulse-Audio-v1.1.0.apk
+"$BT/apksigner" sign --ks build/signing.jks --ks-pass pass:android --out dist/CryptoPulse-Audio-v1.1.1.apk build/aligned.apk
+"$BT/apksigner" verify --verbose dist/CryptoPulse-Audio-v1.1.1.apk

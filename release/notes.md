@@ -1,9 +1,8 @@
-CryptoPulse Audio v1.1.0
+CryptoPulse Audio v1.1.1
 
-- Live Gains prices for BTC, ETH, LINK, LTC, gold, silver, S&P 500, Nasdaq 100, WTI oil and optional EUR/USD.
-- Clean price speech: `BTC up 0.13%`, calculated since the previous fresh quote. No extra narration.
-- Eleven ranked financial/news feeds; government feeds and .gov URLs blocked.
-- News checks minimum/default 60 seconds; persistent ETag/Last-Modified conditional requests avoid repeat body downloads when supported.
-- Custom market thresholds/cooldowns, feed ranking, quiet hours, voices, notifications and foreground monitoring.
+- Fix zero-percent announcements: unchanged and tiny moves rounding to `0.00%` are silent in price alerts and periodic digests. Keep clean `BTC up 0.13%` / `ETH down 0.13%` speech.
+- Remove and block CNBC and MarketWatch, including custom feeds, links and redirects.
+- Upgrade cleanup removes those publishers' cached/queued headlines and old price/digest speech while preserving other customization. Prior update notifications are cleared on service startup.
+- Keep live Gains markets, nine ranked news feeds, minimum/default 60-second conditional news checks, foreground monitoring and headset audio.
 
-Offline checks: 81 pass. APK compiled and signatures verified. Production JVM live-stream connection received the four requested crypto tickers; all ten markets loaded in bootstrap. All eleven news feeds passed the production parser. Physical phone/glasses audio and Android power/lifecycle behavior remain device acceptance items; see VALIDATION.md in the source ZIP.
+123 offline checks pass; APK built and signatures verified with the same update-compatible signing key. Release workflow verifies asset checksums and live price transport. Physical phone/glasses testing remains a device acceptance item.
