@@ -1,0 +1,8 @@
+.android-sdk/
+build/
+dist/
+*.jks
+*.keystore
+*.sample
+.env
+.env.*
